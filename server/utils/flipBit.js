@@ -6,10 +6,11 @@ export function flipBit(message, bitToFlipIndex) {
 
   // Flip the bit at the specified index using bitwise XOR
   const flippedCharCode = charCode ^ (1 << bitIndex);
+  const flippedChar = String.fromCharCode(flippedCharCode);
 
   const flippedMessage =
     message.substring(0, charIndex) +
-    String.fromCharCode(flippedCharCode) +
+    flippedChar +
     message.substring(charIndex + 1);
 
   return flippedMessage;

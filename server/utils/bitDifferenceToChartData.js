@@ -1,19 +1,37 @@
 import { countDifferingBits } from "./index.js";
 
+function hexToBinary(hex) {
+  return parseInt(hex, 16).toString(2).padStart(4, "0");
+}
+
+function countSteps(count) {
+  const steps = [];
+  for (let i = 1; i < count + 1; i++) {
+    steps.push(i);
+  }
+
+  return steps;
+}
+
 export function bitDifferenceToChartData(hash1, hash2) {
   if (hash1.length !== hash2.length) {
     throw new Error("Хеші мають мати однакову довжину");
   }
 
-  const bitDifferences = Array.from(hash1).map((char1, index) => {
-    const char2 = hash2[index];
-    const binary1 = parseInt(char1, 16).toString(2).padStart(4, "0");
-    const binary2 = parseInt(char2, 16).toString(2).padStart(4, "0");
-    return countDifferingBits(binary1, binary2);
-  });
+  const bitDifferences = [];
+  for (let i = 0; i < hash1.length; i++) {
+    const char1 = hash1[i];
+    const char2 = hash2[i];
+
+    const binary1 = hexToBinary(char1);
+    const binary2 = hexToBinary(char2);
+
+    const bitBifference = countDifferingBits(binary1, binary2);
+    bitDifferences.push(bitBifference);
+  }
 
   return {
-    labels: bitDifferences.map((_, i) => i + 1),
+    labels: countSteps(bitDifferences.length),
     datasets: [
       {
         data: bitDifferences,
