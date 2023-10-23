@@ -16,7 +16,7 @@ export function ReadFiles() {
   return (
     <Tab.Content As={Form}>
       <Tab.Header>Вміст файлів</Tab.Header>
-      <Table>
+      <Table responsive>
         <thead>
           <tr>
             <th>Повідомлення</th>

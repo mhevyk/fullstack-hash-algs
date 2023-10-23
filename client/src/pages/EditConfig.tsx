@@ -5,15 +5,19 @@ import { useConfigMutation } from "../hooks";
 import { useHashAlgorithm } from "../context/useAlgorithm";
 import { HashAlgorithm } from "../api/types";
 
-type AlgorithmList = {
-  [name: string]: HashAlgorithm[];
+type HashAlgorithmFamily = {
+  family: string;
+  algorithms: HashAlgorithm[];
 };
 
-const algorithms: AlgorithmList = {
-  md5: [],
-  sha: ["sha1", "sha224", "sha256", "sha384", "sha512"],
-  ripemd: ["ripemd", "ripemd160"],
-};
+const hashAlgorithmSelectData: HashAlgorithmFamily[] = [
+  { family: "md", algorithms: ["md5"] },
+  {
+    family: "sha",
+    algorithms: ["sha1", "sha224", "sha256", "sha384", "sha512"],
+  },
+  { family: "ripemd", algorithms: ["ripemd160"] },
+];
 
 function Option({ value }: { value: string }) {
   return <option value={value}>{value.toUpperCase()}</option>;
@@ -22,19 +26,13 @@ function Option({ value }: { value: string }) {
 function HashingAlgorithmSelect(props: FormSelectProps) {
   return (
     <Form.Select {...props}>
-      {Object.keys(algorithms).map(algorithm => {
-        if (algorithms[algorithm].length === 0) {
-          return <Option key={algorithm} value={algorithm} />;
-        }
-
-        return (
-          <optgroup label={algorithm.toUpperCase()} key={algorithm}>
-            {algorithms[algorithm].map(childAlgorithm => (
-              <Option key={childAlgorithm} value={childAlgorithm} />
-            ))}
-          </optgroup>
-        );
-      })}
+      {hashAlgorithmSelectData.map(({ family, algorithms }) => (
+        <optgroup label={family.toUpperCase()} key={family}>
+          {algorithms.map(algorithm => (
+            <Option key={algorithm} value={algorithm} />
+          ))}
+        </optgroup>
+      ))}
     </Form.Select>
   );
 }
